@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Index.css">
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="axios.js"></script> -->
+    <title>Document</title>
+</head>
+<body>
+    <h1>Personas</h1>
+    <hr>
+        <form id="myForm" method="POST">
+            <div>
+                <label>Id:  </label>
+                <input type="text" id="textId"/>
+                <label>Nombre:  </label>
+                <input type="text" id="textNombre"/>
+                <label>Edad:  </label>
+                <input type="text" id="textEdad"/><br><br>
+            </div>
+            <div>
+                <button type="submitAdd" id="buttonIngresar">Ingresar</button>
+                <button type="submitUpdate" id="buttonActualizar">Actualizar</button>
+                <button type="submitDelete" id="buttonEliminar">Eliminar</button>
+            </div>
+        </form>
+   
+    <hr>
+    <!-- <div id="titulo">
+        <div>Id</div>
+        <div>Nombre</div>
+        <div>Edad</div>
+    </div> -->
+    <div id="divLista" class="grid-container">
+            <div id="data1" class="grid-container-div">
+                <!-- <div></div> -->
+            </div>   
+            <div id="data2" class="grid-container-div">
+                <!-- <div></div> -->
+            </div>     
+            <div id="data3" class="grid-container-div">
+                <!-- <div></div> -->
+            </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">    
+    var url="https://localhost:44338/Api/Persona";
+
+        //Mostrar datos por Get
+     
+
+       
+                fetch(url)
+                .then(response => response.json())
+                .then(Data => agregarElementos(Data))
+
+
+                     
+             
+        
+         function agregarElementos(Data) {
+            var container = document.querySelector(".grid-container");
+            var titulo1 = document.createElement("div");
+            titulo1.innerHTML = "<b>Id</b>";
+            container.appendChild(titulo1);
+            var titulo2 = document.createElement("div");
+            titulo2.innerHTML = "<b>Nombre</b>";
+            container.appendChild(titulo2);
+            var titulo3 = document.createElement("div");
+            titulo3.innerHTML = "<b>Edad</b>";
+            container.appendChild(titulo3);
+
+            for (let i = 0; i < Data.length; i++) {
+                    const element = Data[i];
+
+                    var data1 = element.id;
+                    var data2 = element.nombre;
+                    var data3 = element.edad;
+
+                        console.log(data1);
+                        console.log(data2);
+                        console.log(data3);
+                    crearDivs(data1,data2, data3);
+                    
+                    function crearDivs(data1,data2, data3) {
+                      
+                        var datos1 = document.createElement("div");
+                        container.appendChild(datos1);
+                        datos1.innerHTML = data1 + '<br />';
+                        document.body.appendChild(container);
+                        
+                        var datos2 = document.createElement("div");
+                        datos2.innerHTML = data2 + '<br />';
+                        container.appendChild(datos2);
+                        document.body.appendChild(container);
+
+                        var datos3 = document.createElement("div");
+                        datos3.innerHTML = data3 + '<br />';
+                        container.appendChild(datos3);
+                        document.body.appendChild(container);
+                    }
+
+                    // document.getElementById("data1").innerHTML += data1 + '<br />';
+                    // document.getElementById("data2").innerHTML += data2 + '<br />';
+                    // document.getElementById("data3").innerHTML += data3 + '<br />';
+                    // document.getElementById("divLista").innerHTML +='<hr>';
+                    // document.getElementById("data1").innerHTML += '<b><b/>';
+                    // document.getElementById("data2").innerHTML += '<b><b/>';
+                    // document.getElementById("data3").innerHTML += '<b><b/>';
+                    
+                    
+            }
+                    
+                    
+                    
+
+                    //  var foo = Data.map((datos) => '<div>' + '<tr>' + '<td>' + datos.id + '</td>' +  ' ' 
+                        //                                 + '<td>' + datos.nombre + '</td>'+ ' '
+            //                                 + '<td>' + datos.edad  + '</td>' + '</tr>' +'</div>')
+            
+            //  document.getElementById("divLista").innerHTML = foo.join('<br />');
+                     
+        }
+        
+           
+
+        //Ingresar datos por POST
+ 
+    var form = document.getElementById('myForm');
+    var agregar = document.getElementById("buttonIngresar");
+
+    agregar.addEventListener('click',e =>{
+        e.preventDefault();
+        let peticion;
+        if (window.XMLHttpRequest) peticion = new XMLHttpRequest();
+        else peticion = new ActiveXObject("Microsoft.XMLHTTP");
+
+        let respuesta;
+        if (peticion.status == 200 || peticion.status == 201) respuesta = peticion.response;
+        else respuesta = "Lo siento, no se ha encontrado el producto";
+       
+                           
+
+        
+        peticion.open("POST",url);
+         
+        peticion.setRequestHeader("Content-type","application/json;charset=UTF8");
+
+        peticion.send(JSON.stringify(
+            {
+                "nombre":  document.getElementById("textNombre").value,
+                "edad": parseInt(document.getElementById("textEdad").value)
+            }
+        ))
+        // document.location.reload();
+    })
+
+ 
+
+   let actualizar = document.getElementById("buttonActualizar");
+// generamos el metodo put para actualizar
+   actualizar.addEventListener('click',e => {
+     e.preventDefault();
+
+        let data = {
+                Id:parseInt(document.getElementById("textId").value),
+                Nombre:document.getElementById("textNombre").value,
+                Edad:parseInt(document.getElementById("textEdad").value)
+        };
+        console.log(data.Id);
+        console.log(data.Nombre);
+        console.log(data.Edad);
+
+        fetch(url)
+                        .then(response => response.json())
+                        .then(e => { console.log(e);
+                            for (const value of e) {
+                                console.log(value.id);
+                                if (value.id===data.Id) {
+                                    var Nombre = data.Nombre;
+                                    var Edad = data.Edad;
+                                        console.log(data.Nombre);console.log(data.Edad);
+                                    fetch(url,{
+                                        method:'PUT',
+                                        headers: {'Content-Type': 'application/json'},
+                                        body:JSON.stringify({
+                                            "Id": data.Id,
+                                            "Nombre": Nombre,
+                                            "Edad": Edad
+                                        })
+                                    }).then((response) => response.json())
+                                    .then((json) => console.log(json))
+                                
+                                   
+                                    
+                                }
+                            }
+                        
+                        })  
+
+        // let peticion;
+        // if (window.XMLHttpRequest) peticion = new XMLHttpRequest();
+        // else peticion = new ActiveXObject("Microsoft.XMLHTTP");
+
+        // let respuesta;
+        // if (peticion.status == 200 || peticion.status == 201) respuesta = peticion.response;
+        // else respuesta = "Lo siento, no se ha encontrado el producto";
+
+        // let json = JSON.stringify(data);
+        // peticion.open("PUT",url,true);
+        // peticion.setRequestHeader('Content-type','application/json;charset=UTF8');
+
+        // peticion.send(json);
+        // document.location.reload();
+   })
+    
+
+   let eliminar = document.getElementById("buttonEliminar");
+
+   eliminar.addEventListener('click',e => {
+         e.preventDefault();
+
+
+        
+                        
+                let data = {
+                        Id:parseInt(document.getElementById("textId").value),
+                        Nombre:document.getElementById("textNombre").value,
+                        Edad:parseInt(document.getElementById("textEdad").value)
+                };
+                
+
+                fetch(url)
+                        .then(response => response.json())
+                        .then(e => {
+                            for (const value of e) {
+                                console.log(value.id);
+                                if (value.id===data.Id) {
+                                    var Nombre = value.nombre;
+                                    var Edad = value.edad;
+
+                                    fetch(url,{
+                                        method:'DELETE',
+                                        headers: {'Content-Type': 'application/json',
+                                                    'Accept': 'application/json'},
+                                        body:JSON.stringify({
+                                            "Id": data.Id,
+                                            "Nombre": Nombre,
+                                            "Edad": Edad
+                                        })
+                                    }).then((response) => response.json())
+                                    .then((json) => console.log(json))
+                                
+                                   
+                                    
+                                }
+                            }
+                        
+                        })            
+        
+                        //  document.location.reload();
+
+         
+        
+   })
+    
+
+
+</script>

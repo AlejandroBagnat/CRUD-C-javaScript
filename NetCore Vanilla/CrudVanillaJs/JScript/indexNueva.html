@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+
+<script src="https://unpkg.com/gridjs/dist/gridjs.production.min.js">
+
+
+    var data;
+    var url="https://localhost:44338/Api/Persona";
+    //Mostrar datos por Get
+        
+    fetch(url)
+      .then(response => response.json())
+      .then(Data => agregarElementos(Data))
+    
+
+        
+    
+        var grid = new DataGridXL({
+            columns:[
+                {
+                    Id:'Id'
+                },
+                {
+                    Nombre:'Nombre'
+                },
+                {
+                    Edad:'Edad'
+                }],
+
+                data = data.map(datos =>[{"Id":datos.Id,"Nombre":datos.Nombre,"Edad":datos.Edad}])
+        }).render(document.getElementById("grid"));
+    
+    
+
+</script>
+    <div id="grid"></div>
+    
+</body>
+</html>
+
