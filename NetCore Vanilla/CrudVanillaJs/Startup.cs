@@ -15,7 +15,7 @@ namespace CrudVanillaJs
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "Permitir";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,16 +27,7 @@ namespace CrudVanillaJs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("permitir",
-            //        builder =>
-            //        {
-            //            builder.AllowAnyMethod().AllowAnyOrigin();
-                        
-            //        });
-            //});
+            services.AddMvc();
 
             services.AddCors(options =>
             {
@@ -55,7 +46,11 @@ namespace CrudVanillaJs
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            }
+ 
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -64,12 +59,12 @@ namespace CrudVanillaJs
 
             app.UseAuthorization();
 
+            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            
         }
     }
 }

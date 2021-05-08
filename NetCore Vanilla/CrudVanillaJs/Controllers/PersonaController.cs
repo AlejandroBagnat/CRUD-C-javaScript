@@ -11,7 +11,7 @@ namespace CrudVanillaJs.Controllers
     [EnableCors("Permitir")]
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class PersonaController : ControllerBase
     {
         [HttpGet]
@@ -27,14 +27,14 @@ namespace CrudVanillaJs.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Models.Request.PersonaRequest model)
+        public ActionResult Post([FromBody] Models.Request.PersonRequest model)
         {
             using (Models.CrudVanillaJsContext db = new Models.CrudVanillaJsContext())
             {
-                Models.Persona oPersona = new Models.Persona();
-                oPersona.Nombre = model.Nombre;
-                oPersona.Edad = model.Edad;
-                db.Personas.Add(oPersona);
+                Models.Persona oPerson = new Models.Persona();
+                oPerson.Nombre = model.Nombre;
+                oPerson.Edad = model.Edad;
+                db.Personas.Add(oPerson);
                 db.SaveChanges();
             }
             return Ok();
@@ -42,14 +42,14 @@ namespace CrudVanillaJs.Controllers
 
 
         [HttpPut]
-        public ActionResult Put([FromBody] Models.Request.PersonaEditRequest model)
+        public ActionResult Put([FromBody] Models.Request.PersonEditRequest model)
         {
             using (Models.CrudVanillaJsContext db = new Models.CrudVanillaJsContext())
             {
-                Models.Persona oPersona = db.Personas.Find(model.Id);
-                oPersona.Nombre = model.Nombre;
-                oPersona.Edad = model.Edad;
-                db.Entry(oPersona).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                Models.Persona oPerson = db.Personas.Find(model.Id);
+                oPerson.Nombre = model.Nombre;
+                oPerson.Edad = model.Edad;
+                db.Entry(oPerson).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.SaveChanges();
             }
             return Ok();
@@ -57,12 +57,12 @@ namespace CrudVanillaJs.Controllers
 
 
         [HttpDelete]
-        public ActionResult Delete([FromBody] Models.Request.PersonaEditRequest model)
+        public ActionResult Delete([FromBody] Models.Request.PersonEditRequest model)
         {
             using (Models.CrudVanillaJsContext db = new Models.CrudVanillaJsContext())
             {
-                Models.Persona oPersona = db.Personas.Find(model.Id);
-                db.Personas.Remove(oPersona);
+                Models.Persona oPerson = db.Personas.Find(model.Id);
+                db.Personas.Remove(oPerson);
                 db.SaveChanges();
             }
             return Ok();
